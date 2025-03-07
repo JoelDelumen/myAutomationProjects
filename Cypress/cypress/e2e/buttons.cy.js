@@ -1,9 +1,7 @@
 /// <reference types="cypress" />
 import 'cypress-xpath';
 
-
-describe('Workspace', () => {
-
+describe('Buttons Tests', () => {
     beforeEach(() => {
         cy.viewport(1920, 1080);
         cy.visit('https://letcode.in/');
@@ -14,16 +12,20 @@ describe('Workspace', () => {
         cy.contains('Input').should('be.visible');
     })
 
-    it('Enter Full Name', () => {
-        cy.get('#fullName').type('Joel Delumen');
-    });
+        it('Enter Full Name', () => {
+            cy.get('#fullName').type('Joel Delumen');
+        });
 
-    it('Append a Text', () => {
-        cy.xpath('//app-root/app-edit/section/div/div/div[1]/div/div/div[2]/div/input')
-        .invoke('val')
-        .then((currentValue) => {
+        it('Append a Text', () => {
             cy.xpath('//app-root/app-edit/section/div/div/div[1]/div/div/div[2]/div/input')
-            .type(' New Text');
+            .invoke('val')
+            .then((currentValue) => {
+                cy.xpath('//app-root/app-edit/section/div/div/div[1]/div/div/div[2]/div/input')
+                .type(' New Text');
+            })
+        
+        it('Reads value', () => {
+            cy.get()
         })
-    })
-});
+        })
+})
