@@ -1,4 +1,4 @@
-name: Automation Test
+name: CI/CD for Playwright, Robot Framework, and Cypress
 
 on:
   push:
@@ -15,21 +15,41 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v3
 
-      - name: Set up Node.js
+      - name: Set up Node.js for Cypress and Playwright
         uses: actions/setup-node@v3
         with:
-          node-version: '20.18.0'  # Change to your required Node version
+          node-version: '20.18.0'
 
-      - name: Install Node dependencies
-        run: npm install
-
-      - name: Set up Python
+      - name: Set up Python for Robot Framework
         uses: actions/setup-python@v3
         with:
-          python-version: '3.10.12'  # Change to your desired Python version
+          python-version: '3.10.12'
 
-      - name: Install Python dependencies
-        run: pip install -r requirements.txt  # Ensure robotframework dependencies are listed
+      - name: Install Python dependencies for Robot Framework
+        run: |
+          pip install -r requirements.txt
+
+  cypress_tests:
+    needs: install_dependencies
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js for Cypress
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20.18.0'
+
+      - name: Install Cypress dependencies
+        run: |
+          cd Cypress
+          npm install
+
+      - name: Run Cypress tests
+        run: |
+          cd Cypress
+          npx cypress run
 
   playwright_tests:
     needs: install_dependencies
@@ -41,19 +61,25 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v3
 
-      - name: Set up Node.js
+      - name: Set up Node.js for Playwright
         uses: actions/setup-node@v3
         with:
           node-version: '20.18.0'
 
-      - name: Install dependencies
-        run: npm install
+      - name: Install Playwright dependencies
+        run: |
+          cd Playwright
+          npm install
 
       - name: Install Playwright browsers
-        run: npx playwright install
+        run: |
+          cd Playwright
+          npx playwright install
 
       - name: Run Playwright tests
-        run: npm test  # Assuming your Playwright tests are executed via npm test
+        run: |
+          cd Playwright
+          npm test  # or npx playwright test
 
   robotframework_tests:
     needs: install_dependencies
@@ -62,32 +88,7 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v3
 
-      - name: Set up Python
-        uses: actions/setup-python@v3
-        with:
-          python-version: '3.10.12'
-
-      - name: Install dependencies
-        run: pip install -r requirements.txt  # Make sure to install Robot Framework dependencies
-
       - name: Run Robot Framework tests
-        run: robot tests  # Assuming you have a "tests" directory with robot tests
-
-  cypress_tests:
-    needs: install_dependencies
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v3
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '20.18.0'
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: Run Cypress tests
-        run: npx cypress run  # This runs Cypress tests
-
+        run: |
+          cd Robotframework
+          robot tests  # This assumes you have robot framework tests in 'robotframework/tests'
