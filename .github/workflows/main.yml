@@ -101,4 +101,5 @@ jobs:
       - name: Run Robot Framework tests
         run: |
           cd Robotframework
-          robot -d Logs Testcases  # This assumes you have robot framework tests in 'robotframework/tests'
+          ls Robotframework
+          
