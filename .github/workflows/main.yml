@@ -18,7 +18,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '16'  # Change to your required Node version
+          node-version: '20.18.0'  # Change to your required Node version
 
       - name: Install Node dependencies
         run: npm install
@@ -26,7 +26,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v3
         with:
-          python-version: '3.9'  # Change to your desired Python version
+          python-version: '3.10.12'  # Change to your desired Python version
 
       - name: Install Python dependencies
         run: pip install -r requirements.txt  # Ensure robotframework dependencies are listed
@@ -44,7 +44,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '16'
+          node-version: '20.18.0'
 
       - name: Install dependencies
         run: npm install
@@ -65,7 +65,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v3
         with:
-          python-version: '3.9'
+          python-version: '3.10.12'
 
       - name: Install dependencies
         run: pip install -r requirements.txt  # Make sure to install Robot Framework dependencies
@@ -83,7 +83,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '16'
+          node-version: '20.18.0'
 
       - name: Install dependencies
         run: npm install
