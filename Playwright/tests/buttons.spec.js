@@ -16,7 +16,7 @@ afterEach(() => {
 
 test.describe('Button Features Tests', () => {
 
-    test('Go to Home', async ({page}) => {
+    test.only('Go to Home', async ({page}) => {
         await expect(page.getByRole('heading', { name: 'Button', exact: true })).toBeVisible();
         await page.getByRole('button', { name: 'Goto Home and come back here' }).click();
     });
