@@ -102,5 +102,5 @@ jobs:
         run: |
           ls
           cd Robotframework
-          ls
+          robot -d Logs Robotframework/Testcases/button.robot
           
