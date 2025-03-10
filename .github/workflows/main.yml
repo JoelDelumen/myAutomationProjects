@@ -100,6 +100,5 @@ jobs:
 
       - name: Run Robot Framework tests
         run: |
-          cd Robotframework
-          ls Robotframework
+          ls
           
