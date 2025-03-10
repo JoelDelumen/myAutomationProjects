@@ -27,17 +27,16 @@ jobs:
 
       - name: Install Python dependencies for Robot Framework
         run: |
-          apt-get update && apt-get -y install gnupg2 wget python3-tk tk-dev unzip ca-certificates libpq-dev git
-          wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
-          && echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list
-          apt-get update && apt-get -y install google-chrome-stable
-          CHROMEDRIVER_VERSION=`wget --no-verbose --output-document - https://chromedriver.storage.googleapis.com/LATEST_RELEASE` && wget --no-verbose --output-document /tmp/chromedriver_linux64.zip http://chromedriver.storage.googleapis.com/$CHROMEDRIVER_VERSION/chromedriver_linux64.zip
-          unzip -qq /tmp/chromedriver_linux64.zip -d /usr/bin/chromedriver
-          PATH="${PATH}:/usr/bin/chromedriver"
-          chmod 777 /usr/bin/chromedriver
-          wget http://www.browserstack.com/browserstack-local/BrowserStackLocal-linux-x64.zip -O browserstack-local-linux.zip
-          python3 -m pip install loguru
-          python3 -m pip install pyyaml
+          # Install Google Chrome
+          wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+          sudo dpkg -i google-chrome-stable_current_amd64.deb
+          sudo apt --fix-broken install -y  # Install any missing dependencies
+
+          # Install ChromeDriver
+          LATEST_CHROMEDRIVER=$(curl -sS https://chromedriver.storage.googleapis.com/LATEST_RELEASE)
+          wget https://chromedriver.storage.googleapis.com/${LATEST_CHROMEDRIVER}/chromedriver_linux64.zip
+          unzip chromedriver_linux64.zip
+          sudo mv chromedriver /usr/local/bin/
           pip3 install -r requirements.txt
 
   cypress_tests:
