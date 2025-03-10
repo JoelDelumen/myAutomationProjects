@@ -79,7 +79,7 @@ jobs:
       - name: Run Playwright tests
         run: |
           cd Playwright
-          npm test  # or npx playwright test
+          npx playwright test  # or npx playwright test
 
   robotframework_tests:
     needs: install_dependencies
@@ -91,4 +91,4 @@ jobs:
       - name: Run Robot Framework tests
         run: |
           cd Robotframework
-          robot tests  # This assumes you have robot framework tests in 'robotframework/tests'
+          robot -d Logs Testcases  # This assumes you have robot framework tests in 'robotframework/tests'
