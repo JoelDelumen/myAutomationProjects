@@ -1,6 +1,4 @@
 import {test, expect, beforeEach, afterEach} from '@playwright/test'
-import { AsyncLocalStorage } from 'async_hooks';
-import { CONNREFUSED } from 'dns';
 
 beforeEach(async ({page}) => {
     await page.goto('https://letcode.in/');
@@ -18,16 +16,39 @@ afterEach(() => {
 test.describe('Window Testing', () => {
     
     // this command clicks a button and waits for a new page/tab or popup to open
-    test('Open Single', async ({page}) => {
+    test('Open Single Tab', async ({page}) => {
 
         const [newTab] = await Promise.all([
             page.waitForEvent('popup'),
-            page.locator('//app-root/app-window/section/div/div/div[1]/div/div/div[1]/div/button').click()
+            page.click('"Open Home Page"')
         ])
-        console.log(newTab.url());
+        console.log(newTab.url())
+        newTab.close();
+        await page.bringToFront();
+        
     })
 
-    test('Open Multiple Pages', async ({page})=> {
-        
+    test('Open Multiple Tab', async ({page})=> {
+        const [multipage] = await Promise.all([
+            page.waitForEvent('popup'),
+            await page.click('"Muiltiple windows"')
+        ])
+        await multipage.waitForLoadState();
+        const pages = multipage.context().pages();
+        console.log(pages.length);
+        pages.forEach(page => {
+            console.log(page.url());
+        })
+        pages[1].on('dialog', (dialog) => {
+            console.log(dialog.message());
+            dialog.accept();
+        })
+        await pages[1].click('"Confirm Alert"');
+        pages[1].close();
+
+        await pages[2].bringToFront();
+        await pages[2].selectOption('#fruits', 'Apple');
+        await expect(pages[2].locator('//*[@class="notification is-success"]')).toHaveText('You have selected Apple');
+        pages[2].close();
     })
 })
